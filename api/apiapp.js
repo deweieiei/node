@@ -3,25 +3,25 @@ const router = express.Router();
 
 
 
-const mysql = require('mysql2');
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'testdb'
-});
+// const mysql = require('mysql2');
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '',
+//     database: 'testdb'
+// });
 
 
 
 // API สำหรับดึงข้อมูลผู้ใช้
 router.get('/load-data', (req, res) => {
   try{
-    connection.connect();
-    connection.query('SELECT * FROM users', (err, results) => {
-        if (err) throw err;      
-        res.json({ success: true, message: results });
+    // connection.connect();
+    // connection.query('SELECT * FROM users', (err, results) => {
+    //     if (err) throw err;      
+    //     res.json({ success: true, message: results });
 
-    });
+    // });
 }catch (e){
     res.json({success: true, message: {"error":e}});
 }

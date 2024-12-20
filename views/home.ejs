@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <h1><%= message %></h1>
-    <a href="/login">Go to Login</a>
-    <% if (true) { %>
-        <p>This is rendered because the condition is true.</p>
-    <% } %>
-
-    <ul>
-        <% for (let i = 0; i < 5; i++) { %>
-            <li>Item <%= i + 1 %></li>
-        <% } %>
-    </ul>
+    <div class="appbar">
+        <div class="logo">MyApp</div>
+        <nav class="navigation">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="/login">Login</a>
+        </nav>
+    </div>
+    <div class="content">
+        <h1>
+            <%= message %>
+        </h1>
+        <p>This is a simple example of an AppBar styled using HTML and CSS.</p>
+    </div>
 </body>
 </html>
