@@ -15,6 +15,8 @@ const router = express.Router();
 
 // API สำหรับดึงข้อมูลผู้ใช้
 router.get('/load-data', (req, res) => {
+    
+    res.json({ success: true, message: {"key":"dew1"} });
   try{
     // connection.connect();
     // connection.query('SELECT * FROM users', (err, results) => {
