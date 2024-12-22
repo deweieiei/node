@@ -19,5 +19,5 @@ const apiApp = require('./api/apiapp');
 app.use('/apiapp', apiApp);
 app.use(express.static('public'));
 app.listen(80, () => {
-    console.log('Server is running on http://localhost:80');
+    console.log('Server is running  ');
 });
