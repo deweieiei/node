@@ -3,24 +3,27 @@ const express = require('express');
 const router = express.Router();
 const { connectDb , addtable} = require('./dbConnection'); // นำเข้า connectDb
 const mysql = require('mysql2');
-// เชื่อมต่อฐานข้อมูลและสร้างฐานข้อมูลถ้าไม่มี
-connectDb()
-  .then((connection) => {
-    console.log('Database connection established!');
-    // คุณสามารถใช้งาน connection ที่นี่เพื่อดึงข้อมูลจากฐานข้อมูลหรือใช้คำสั่งอื่น ๆ ได้
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-// เชื่อมต่อtablและสร้างฐานข้อมูลถ้าไม่มี
-addtable()
-  .then((connection) => {
-    console.log('Table connection established!');
-    // คุณสามารถใช้งาน tabl ที่นี่เพื่อดึงข้อมูลจากฐานข้อมูลหรือใช้คำสั่งอื่น ๆ ได้
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+
+// // เชื่อมต่อฐานข้อมูลและสร้างฐานข้อมูลถ้าไม่มี
+// connectDb()
+//   .then((connection) => {
+//     console.log('Database connection established!');
+//     // คุณสามารถใช้งาน connection ที่นี่เพื่อดึงข้อมูลจากฐานข้อมูลหรือใช้คำสั่งอื่น ๆ ได้
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+// // เชื่อมต่อtablและสร้างฐานข้อมูลถ้าไม่มี
+// addtable()
+//   .then((connection) => {
+//     console.log('Table connection established!');
+//     // คุณสามารถใช้งาน tabl ที่นี่เพื่อดึงข้อมูลจากฐานข้อมูลหรือใช้คำสั่งอื่น ๆ ได้
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+
 // เวลาเเละวันที่
 const getCurrentDateTime = () => {
   return new Date().toISOString();
