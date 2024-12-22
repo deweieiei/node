@@ -1,38 +1,32 @@
 const express = require('express');
 const router = express.Router();
+// เวลาเเละวันที่
+const getCurrentDateTime = () => {
+    return new Date().toISOString();
+};
 
-
-
-// const mysql = require('mysql2');
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '',
-//     database: 'testdb'
-// });
-
+//
+router.get('/', (req, res) => {
+    res.json({ success: true, 
+               message: {"statu":"success"}, 
+               dateTime: getCurrentDateTime()  
+            });   
+});
 
 
 // API สำหรับดึงข้อมูลผู้ใช้
 router.get('/load-data', (req, res) => {
     
-    res.json({ success: true, message: {"key":"dew1"} });
-  try{
-    // connection.connect();
-    // connection.query('SELECT * FROM users', (err, results) => {
-    //     if (err) throw err;      
-    //     res.json({ success: true, message: results });
-
-    // });
-}catch (e){
-    res.json({success: true, message: {"error":e}});
-}
+    try {
+        // สมมุติว่าคุณจะใส่โค้ดดึงข้อมูลจากฐานข้อมูลที่นี่
+        const data = { id: 1, name: "John Doe" }; // ตัวอย่างข้อมูล
+        res.json({ success: true, message: { status: "success", data },dateTime: getCurrentDateTime()});
+    } catch (e) {
+        res.json({ success: false, message: { error: e.message },dateTime: getCurrentDateTime()});
+    }
     
 });
 
-// API สำหรับข้อมูลผู้ใช้
-router.get('/profile', (req, res) => {
-    res.json({ success: true, data: { name: 'John Doe', age: 30 } });
-});
+ 
 
 module.exports = router;

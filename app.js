@@ -9,7 +9,7 @@ app.set('views', './views');
 
 
 app.get('/', (req, res) => {
-    res.render('home', { title: 'My EJS Page', message: 'Hello, EJS!' });
+    res.render('home', { title: 'Double', message: 'Hello, EJS!' });
 });
 app.get('/login', (req, res) => {
     res.render('login', { title: 'login', message: 'login' });
