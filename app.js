@@ -18,6 +18,6 @@ app.get('/login', (req, res) => {
 const apiApp = require('./api/apiapp');
 app.use('/apiapp', apiApp);
 app.use(express.static('public'));
-app.listen(80, () => {
+app.listen(4000, () => {
     console.log('Server is running  ');
 });

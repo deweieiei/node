@@ -1,57 +1,84 @@
+// apiapp.js
 const express = require('express');
 const router = express.Router();
+const { connectDb , addtable} = require('./dbConnection'); // นำเข้า connectDb
 const mysql = require('mysql2');
-// // สร้างการเชื่อมต่อ
-// var connection = mysql.createConnection({
-//   host: 'localhost',  // ชื่อโฮสต์
-//   user: 'root',       // ชื่อผู้ใช้ MySQL
-//   password: '', // รหัสผ่าน MySQL
-// });
-// // สร้างฐานข้อมูลถ้าไม่มีอยู่แล้ว
-// connection.connect((err) => {
-//   if (err) {
-//     console.error('Error connecting to MySQL:', err.message);
-//     return;
-//   }
-//   console.log('Connected to MySQL!');
-//   const createDbQuery = 'CREATE DATABASE IF NOT EXISTS my_database';
-//   connection.query(createDbQuery, (err, results) => {
-//     if (err) {
-//       console.error('Error creating database:', err.message);
-//       return;
-//     }
-//     console.log('Database created successfully!');
-//     connection.end(); // ปิดการเชื่อมต่อ
-//   });
-// });
-
+// เชื่อมต่อฐานข้อมูลและสร้างฐานข้อมูลถ้าไม่มี
+connectDb()
+  .then((connection) => {
+    console.log('Database connection established!');
+    // คุณสามารถใช้งาน connection ที่นี่เพื่อดึงข้อมูลจากฐานข้อมูลหรือใช้คำสั่งอื่น ๆ ได้
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+// เชื่อมต่อtablและสร้างฐานข้อมูลถ้าไม่มี
+addtable()
+  .then((connection) => {
+    console.log('Table connection established!');
+    // คุณสามารถใช้งาน tabl ที่นี่เพื่อดึงข้อมูลจากฐานข้อมูลหรือใช้คำสั่งอื่น ๆ ได้
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 // เวลาเเละวันที่
 const getCurrentDateTime = () => {
-    return new Date().toISOString();
+  return new Date().toISOString();
 };
 
-//
+// API สำหรับแสดงเวลาปัจจุบัน
 router.get('/', (req, res) => {
-    res.json({ success: true, 
-               message: {"statu":"success"}, 
-               dateTime: getCurrentDateTime()  
-            });   
-});
-
-
-// API สำหรับดึงข้อมูลผู้ใช้
-router.get('/load-data', (req, res) => {
-    
-    try {
-        // สมมุติว่าคุณจะใส่โค้ดดึงข้อมูลจากฐานข้อมูลที่นี่
-        const data = { id: 1, name: "John Doe" }; // ตัวอย่างข้อมูล
-        res.json({ success: true, message: { status: "success", data },dateTime: getCurrentDateTime()});
-    } catch (e) {
-        res.json({ success: false, message: { error: e.message },dateTime: getCurrentDateTime()});
-    }
-    
+  res.json({
+    success: true,
+    message: { status: 'success' },
+    dateTime: getCurrentDateTime(),
+  });
 });
 
  
+
+router.get('/get-all-users', async (req, res) => {
+  try {
+    // เชื่อมต่อกับฐานข้อมูล
+    const connection = await connectDb();    
+    // สร้างคำสั่ง SQL สำหรับดึงข้อมูลทั้งหมดจากตาราง users
+    const query = 'SELECT * FROM users';  
+    // ดำเนินการคำสั่ง SQL
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching users:', err);
+        res.status(500).json({ success: false, message: 'Error fetching users', error: err.message, dateTime: getCurrentDateTime() });
+        return;
+      }    
+      // ส่งผลลัพธ์กลับไปที่ผู้ใช้
+      res.status(200).json({ success: true, message: 'successfully', data: results, dateTime: getCurrentDateTime() });
+    });
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message, dateTime: getCurrentDateTime()});
+  }
+});
+
+router.post('/add-user', (req, res) => {
+  const { username, password, email, profile_image } = req.body; // รับข้อมูลจาก body ของคำขอ POST
+  if (!username || !password || !email) { // ตรวจสอบว่า ข้อมูลสำคัญครบถ้วน
+    return res.status(400).json({ success: false, message: 'Missing required fields' });
+  }
+  db.connectDb()  // เชื่อมต่อกับฐานข้อมูล
+    .then((connection) => {
+      const query = 'INSERT INTO users (username, password, email, profile_image) VALUES (?, ?, ?, ?)';  // SQL query สำหรับบันทึกข้อมูล
+      const values = [username, password, email, profile_image || null];  // ข้อมูลที่ต้องการเก็บในตาราง
+      connection.query(query, values, (err, result) => {
+        if (err) {
+          res.status(500).json({ success: false, message: 'Error inserting user data', error: err.message });
+          return;
+        }
+        res.status(200).json({ success: true, message: 'User added successfully', data: result });
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, message: 'Database connection failed', error: err });
+    });
+});
 
 module.exports = router;
