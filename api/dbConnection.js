@@ -1,44 +1,26 @@
 // dbConnection.js
 const mysql = require('mysql2');
 
+
 // สร้างการเชื่อมต่อ (ครั้งแรกจะไม่เชื่อมต่อฐานข้อมูลเลย)
-const connection = mysql.createConnection({
-  host: 'localhost',  // ชื่อโฮสต์
-  user: 'root',       // ชื่อผู้ใช้ MySQL
-  password: '',       // รหัสผ่าน MySQL
+const { Client } = require('pg');
+
+// Set up the connection configuration
+const client = new Client({
+  user:  'my_database_psk5_user',// 'postgres',
+  host:  'dpg-ctl1e3i3esus73ecgro0-a',// 'localhost',
+  database: 'my_database_psk5',//'my_database',
+  password: 'em8L3NqvObSvfaPmTDJF5QaYfZmUsy0X',//'your_password',
+  port: 5432,
 });
-
-// เชื่อมต่อกับ MySQL และสร้างฐานข้อมูล
-const connectDb = () => {
-  return new Promise((resolve, reject) => {
-    connection.connect((err) => {
-      if (err) {
-        reject('Error connecting to MySQL:', err.message);
-        return;
-      }
-      console.log('Connected to MySQL!');
-      
-      const createDbQuery = 'CREATE DATABASE IF NOT EXISTS my_database';
-      connection.query(createDbQuery, (err, results) => {
-        if (err) {
-          reject('Error creating database:', err.message);
-          return;
-        }
-        console.log('Database created successfully!');
-
-        // เลือกฐานข้อมูลที่สร้างขึ้น
-        connection.query('USE my_database', (err) => {
-          if (err) {
-            reject('Error selecting database:', err.message);
-            return;
-          }
-          resolve(connection); // ส่งคืนการเชื่อมต่อฐานข้อมูล my_database
-        });
-      });
-    });
+// Connect to PostgreSQL
+client.connect()
+  .then(() => {
+    console.log("Connected to PostgreSQL database!");
+  })
+  .catch(err => {
+    console.error("Connection error", err.stack);
   });
-};
-
 // เชื่อมต่อกับ MySQL และสร้างตาราง
 const addtable = () => {
   return new Promise((resolve, reject) => {
@@ -76,5 +58,16 @@ const addtable = () => {
 };
 
 module.exports = { connectDb, addtable };
+
+
+ 
+
+ 
+
+  //dpg-ctl1e3i3esus73ecgro0-a//host
+//5432//post
+//my_database_psk5//database
+//my_database_psk5_user//user
+//em8L3NqvObSvfaPmTDJF5QaYfZmUsy0X//password
 
  
