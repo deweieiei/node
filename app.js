@@ -47,7 +47,10 @@
      console.error("Error initializing database:", err.stack);
    }
  };
- 
+ app.get('/',async (req, res) => {
+   // res.render('home', { title: 'Double', message: 'Hello, EJS!' });
+   res.json("----");
+});
  // Define the /api/user route
  app.get('/api/user', async (req, res) => {
    try {
