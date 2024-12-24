@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { connectDb , addtable} = require('./dbConnection'); // นำเข้า connectDb
-const mysql = require('mysql2');
+//const mysql = require('mysql2');
 
 // // เชื่อมต่อฐานข้อมูลและสร้างฐานข้อมูลถ้าไม่มี
 // connectDb()
