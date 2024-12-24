@@ -18,7 +18,7 @@ client.connect()
     console.error("Connection error", err.stack);
   });
   
-module.exports = { connectDb, addtable };
+module.exports = { connectDb };
 
 
  
