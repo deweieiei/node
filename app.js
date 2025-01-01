@@ -9,10 +9,10 @@ app.set('views', './views');
 
 
 app.get('/', (req, res) => {
-    res.render('home', { title: 'Double', message: 'Hello, EJS!' });
+    res.render('home', { title: 'Double'  });
 });
 app.get('/login', (req, res) => {
-    res.render('login', { title: 'login', message: 'login' });
+    res.render('login', { title: 'login', message: 'login' });////77777
 });
 
 const apiApp = require('./api/apiapp');
