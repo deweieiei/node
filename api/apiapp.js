@@ -1,7 +1,7 @@
 // apiapp.js
 const express = require('express');
 const router = express.Router();
-const { connectDb } = require('./dbConnection'); // นำเข้า connectDb
+//const { connectDb } = require('./dbConnection'); // นำเข้า connectDb
 const db = require('./dbConnection'); // Import the MySQL connection
 
  
@@ -24,7 +24,7 @@ const getCurrentDateTime = () => {
 // });
 
 router.get('/', (req, res) => {
-  connectDb();
+  //connectDb();
   res.json({
     success: true,
     message: { status: 'success' },
