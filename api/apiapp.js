@@ -11,13 +11,23 @@ const getCurrentDateTime = () => {
 };
 
 // API สำหรับแสดงเวลาปัจจุบัน
-router.get('/', (req, res) => {
+router.get('/s', (req, res) => {
   //connectDb();
   res.json({
     success: true,
     message: { status: 'success '},
     dateTime: getCurrentDateTime(),
 
+  });
+});
+
+router.get('/', (req, res) => {
+  // Uncomment and define this function if needed
+  // connectDb();
+  res.json({
+    success: true,
+    message: { status: 'success' },
+    dateTime: getCurrentDateTime(),
   });
 });
 

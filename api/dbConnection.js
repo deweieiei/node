@@ -8,6 +8,9 @@ const db = mysql.createConnection({
   database: 'beingstory_', // ชื่อฐานข้อมูล
 });
 
+
+  
+
 // เริ่มเชื่อมต่อ
 db.connect((err) => {
   if (err) {
