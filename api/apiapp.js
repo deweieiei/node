@@ -11,36 +11,32 @@ const getCurrentDateTime = () => {
 };
 
 // API สำหรับแสดงเวลาปัจจุบัน
-router.get('/s', (req, res) => {
-  //connectDb();
-  res.json({
-    success: true,
-    message: { status: 'success '},
-    dateTime: getCurrentDateTime(),
-
-  });
-});
+// router.get('/', (req, res) => {
+//   // Uncomment and define this function if needed
+//   // connectDb();
+//   res.json({
+//     success: true,
+//     message: { status: 'success' },
+//     dateTime: getCurrentDateTime(),
+//   });
+// });
 
 router.get('/', (req, res) => {
-  // Uncomment and define this function if needed
-  // connectDb();
   res.json({
     success: true,
     message: { status: 'success' },
-    dateTime: getCurrentDateTime(),
+    dateTime: new Date().toISOString(),
   });
 });
 
- 
-
-router.get('/get-all-users', async (req, res) => {
+// router.get('/get-all-users', async (req, res) => {
   
-  res.json({
-    success: true,
-    message: { status: 'success' },
-    dateTime: getCurrentDateTime(),
-  });
-});
+//   res.json({
+//     success: true,
+//     message: { status: 'success' },
+//     dateTime: getCurrentDateTime(),
+//   });
+// });
  
 
 module.exports = router;
