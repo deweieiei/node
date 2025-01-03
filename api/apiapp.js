@@ -12,11 +12,12 @@ const getCurrentDateTime = () => {
 
 // API สำหรับแสดงเวลาปัจจุบัน
 router.get('/', (req, res) => {
-  connectDb();
+ data = connectDb();
   res.json({
     success: true,
-    message: { status: 'success' },
+    message: { status: 'success ', d:data },
     dateTime: getCurrentDateTime(),
+
   });
 });
 
