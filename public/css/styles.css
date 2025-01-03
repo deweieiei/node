@@ -2,14 +2,14 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: rgb(37, 37, 37);
+    background-color: rgb(255, 255, 255);
   }
   
   .appbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(37, 37, 37); /* สีพื้นหลัง */
+    background-color: rgb(82, 161, 114); /* สีพื้นหลัง */
     color: white;
     padding: 10px 20px;
     position: sticky; /* ทำให้ติดด้านบนเมื่อเลื่อน */
@@ -43,7 +43,7 @@ body {
     align-items: center;
     height: 100vh;
     /* background: linear-gradient(135deg, #373737, #3f0000); */
-    background-color: rgb(37, 37, 37);
+    background-color: rgb(255, 255, 255);
     font-family: Arial, sans-serif;
 }
 
@@ -84,7 +84,7 @@ body {
 }
 
 .boxlogin button:hover {
-    background:  #373737;
+    background: rgb(82, 161, 114);
 }
 
 .boxlogin input:focus {
