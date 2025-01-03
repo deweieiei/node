@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" href="/css/styles.css">
 <style></style>
 </head>
-<body>
-    <h1><%= message %></h1>
-    <a href="/">Go to home</a>
-    <% if (true) { %>
-        <p>This is rendered because the condition is true.</p>
-    <% } %>
-
-    <ul>
-        <% for (let i = 0; i < 5; i++) { %>
-            <li>Item <%= i + 1 %></li>
-        <% } %>
-    </ul>
+<body >
+   <div class="login-wrapper">
+        <div class="boxlogin">
+            <h2>Tree</h2>
+            <form>
+      
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

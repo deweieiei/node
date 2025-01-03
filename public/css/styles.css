@@ -2,14 +2,14 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(37, 37, 37);
   }
   
   .appbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ea0000; /* สีพื้นหลัง */
+    background-color: rgb(37, 37, 37); /* สีพื้นหลัง */
     color: white;
     padding: 10px 20px;
     position: sticky; /* ทำให้ติดด้านบนเมื่อเลื่อน */
@@ -37,3 +37,58 @@ body {
     padding: 20px;
   }
   
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* background: linear-gradient(135deg, #373737, #3f0000); */
+    background-color: rgb(37, 37, 37);
+    font-family: Arial, sans-serif;
+}
+
+.boxlogin {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+.boxlogin h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #373737;
+}
+
+.boxlogin input {
+      width: 80%;  
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.boxlogin button {
+    width: 80%;
+    padding: 10px;
+    background:  #c7c7c7;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.boxlogin button:hover {
+    background:  #373737;
+}
+
+.boxlogin input:focus {
+    /* border-color: #f10000; */
+    outline: none;
+    box-shadow: 0 0 5px rgb(37, 37, 37);
+}

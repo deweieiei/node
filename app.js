@@ -9,15 +9,16 @@ app.set('views', './views');
 
 
 app.get('/', (req, res) => {
-    res.render('home', { title: 'BeingStory', message: 'Welcom' });
+    res.render('home', { title: 'BeingStory', message: 'Welcome' });
+ 
 });
 app.get('/login', (req, res) => {
-    res.render('login', { title: 'login', message: 'login' });
+    res.render('login', { title: 'login', message: 'login' });////77777
 });
 
 const apiApp = require('./api/apiapp');
 app.use('/apiapp', apiApp);
 app.use(express.static('public'));
-app.listen(4000, () => {
+app.listen(80, () => {
     console.log('Server is running  ');
 });
