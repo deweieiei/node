@@ -1,7 +1,7 @@
 // apiapp.js
 const express = require('express');
 const router = express.Router();
-//const { connectDb } = require('./dbConnection'); // นำเข้า connectDb
+const { connectDb } = require('./dbConnection'); // นำเข้า connectDb
  
 
 
@@ -22,6 +22,7 @@ const getCurrentDateTime = () => {
 // });
 
 router.get('/', (req, res) => {
+  connectDb();
   res.json({
     success: true,
     message: { status: 'success' },
