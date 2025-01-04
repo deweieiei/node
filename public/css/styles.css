@@ -92,3 +92,6 @@ body {
     outline: none;
     box-shadow: 0 0 5px rgb(37, 37, 37);
 }
+a {
+        text-decoration: none;
+    }
