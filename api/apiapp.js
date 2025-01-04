@@ -1,28 +1,16 @@
 // apiapp.js
 const express = require('express');
-const router = express.Router();
-//const { connectDb } = require('./dbConnection'); // นำเข้า connectDb
-const db = require('./dbConnection'); // Import the MySQL connection
+const router = express.Router(); 
+const db = require('./dbConnection'); 
 
  
 
-
-// เวลาเเละวันที่
+ 
 const getCurrentDateTime = () => {
   return new Date().toISOString();
 };
 
-// API สำหรับแสดงเวลาปัจจุบัน
-// router.get('/', (req, res) => {
-//   // Uncomment and define this function if needed
-//   // connectDb();
-//   res.json({
-//     success: true,
-//     message: { status: 'success' },
-//     dateTime: getCurrentDateTime(),
-//   });
-// });
-
+ 
 router.get('/', (req, res) => {
   //connectDb();
   res.json({
@@ -31,10 +19,9 @@ router.get('/', (req, res) => {
     dateTime: new Date().toISOString(),
   });
 });
-
-// API to get all users
+ 
 router.get('/get-all-users', (req, res) => {
-  const query = 'SELECT * FROM `user`'; // SQL query to fetch all users
+  const query = 'SELECT * FROM `user`';  
 
   db.query(query, (err, results) => {
     if (err) {
@@ -46,7 +33,16 @@ router.get('/get-all-users', (req, res) => {
       });
     }
 
-    // Respond with fetched user data
+    // ตรวจสอบว่ามีผลลัพธ์หรือไม่
+    if (!results || results.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: { status: 'no_data_found', error: 'No users found in the database' },
+        dateTime: getCurrentDateTime(),
+      });
+    }
+
+    // ส่งข้อมูลกลับถ้ามีผลลัพธ์
     res.json({
       success: true,
       message: { status: 'success', users: results },
@@ -54,6 +50,6 @@ router.get('/get-all-users', (req, res) => {
     });
   });
 });
- 
+
 
 module.exports = router;

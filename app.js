@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
     res.render('home', { title: 'BeingStory', message: 'Welcome' });
 });
 app.get('/login', (req, res) => {
-    res.render('login', { title: 'login', message: 'login' });////77777
+    res.render('login', { title: 'Login', message: 'Login' });////77777
 });
 
 app.use('/apiapp', apiApp);
