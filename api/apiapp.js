@@ -19,27 +19,6 @@ router.get('/', (req, res) => {
   });
 });
  
-router.get('/check-connect', (req, res) => {
-  db.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err.message);
-      return res.status(500).json({
-        success: false,
-        message: 'Error connecting to the database',
-        error: err.message,
-        dateTime: getCurrentDateTime(),
-      });
-    }
-
-    console.log('Database connection successful');
-    connection.release(); // ปล่อยการเชื่อมต่อหลังจากตรวจสอบเสร็จ
-    res.json({
-      success: true,
-      message: 'Database connection successful',
-      dateTime: getCurrentDateTime(),
-    });
-  });
-});
 
 router.get('/get-all-users', (req, res) => {
   const query = 'SELECT * FROM `user`';  
@@ -52,9 +31,7 @@ router.get('/get-all-users', (req, res) => {
         message: { status: 'error', error: err.message },
         dateTime: getCurrentDateTime(),
       });
-    }
-
-    // ตรวจสอบว่ามีผลลัพธ์หรือไม่
+    } 
     if (!results || results.length === 0) {
       return res.status(404).json({
         success: false,
@@ -62,12 +39,43 @@ router.get('/get-all-users', (req, res) => {
         dateTime: getCurrentDateTime(),
       });
     }
-
-    // ส่งข้อมูลกลับถ้ามีผลลัพธ์
+ 
     res.json({
       success: true,
       message: { status: 'success', users: results },
       dateTime: getCurrentDateTime(),
+    });
+  });
+});
+
+
+router.post('/save-data', (req, res) => {
+  const { username, password } = req.body;
+ 
+  if (!username || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'Username and password are required',
+    });
+  }
+ 
+  const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+  db.query(query, [username, password], (err, result) => {
+    if (err) {
+      console.error('Error inserting user:', err.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Error saving the user',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'User saved successfully',
+      data: {
+        userId: result.insertId,
+        username: username,
+      },
     });
   });
 });
