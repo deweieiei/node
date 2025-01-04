@@ -12,7 +12,6 @@ const getCurrentDateTime = () => {
 
  
 router.get('/', (req, res) => {
-  //connectDb();
   res.json({
     success: true,
     message: { status: 'success' },
@@ -20,6 +19,28 @@ router.get('/', (req, res) => {
   });
 });
  
+router.get('/check-connect', (req, res) => {
+  db.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error connecting to the database:', err.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Error connecting to the database',
+        error: err.message,
+        dateTime: getCurrentDateTime(),
+      });
+    }
+
+    console.log('Database connection successful');
+    connection.release(); // ปล่อยการเชื่อมต่อหลังจากตรวจสอบเสร็จ
+    res.json({
+      success: true,
+      message: 'Database connection successful',
+      dateTime: getCurrentDateTime(),
+    });
+  });
+});
+
 router.get('/get-all-users', (req, res) => {
   const query = 'SELECT * FROM `user`';  
 
