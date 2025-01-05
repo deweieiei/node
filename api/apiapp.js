@@ -52,7 +52,7 @@ router.post('/save-data', (req, res) => {
   if (!username || !password) {
     return res.status(400).json({
       success: false,
-      message: 'Username and password are required',
+      message: 'Username and password are required:'+req.body,   
     });
   }
   const query =  'INSERT INTO `user` ( `username`, `password`) VALUES (?, ?)';  
