@@ -1,4 +1,3 @@
-// apiapp.js
 const express = require('express');
 const router = express.Router(); 
 const db = require('./dbConnection');  
@@ -46,30 +45,17 @@ router.get('/get-all-users', (req, res) => {
   });
 });
 
-
-// Save user data (simplified as both save-data and save-datas were identical)
+ 
 router.post('/save-data', (req, res) => {
   const { username, password } = req.body;
-
   console.log('Request Body:', req.body); 
-
-  // res.json({
-  //   success: true,
-  //   message: { status: 'success', result: req.body },
-  //   dateTime: getCurrentDateTime(),
-  // });
-
-  // Validate input
   if (!username || !password) {
     return res.status(400).json({
       success: false,
       message: 'Username and password are required',
     });
   }
-
-  // SQL query to insert user data
- 
-  const query =  'INSERT INTO `user` ( `username`, `password`) VALUES (?, ?)'; //'INSERT INTO user (username, password) VALUES (?, ?)';
+  const query =  'INSERT INTO `user` ( `username`, `password`) VALUES (?, ?)';  
   db.query(query, [username, password], (err, result) => {
     if (err) {
       console.error('Error inserting user:', err.message);
@@ -78,8 +64,7 @@ router.post('/save-data', (req, res) => {
         message: 'Error saving the user',
       });
     }
-
-    // Respond with success
+ 
     res.json({
       success: true,
       message: 'User saved successfully',
@@ -92,21 +77,7 @@ router.post('/save-data', (req, res) => {
 });
 
 
-router.post('/submit', (req, res) => {
-  const { name, age } = req.body;
-  if (!name || !age) {
-      return res.status(400).json({ error: 'Name and age are required' });
-  }
 
-  res.status(200).json({
-      message: 'Data received successfully',
-      data: {
-          name,
-          age,
-      },
-      dateTime: getCurrentDateTime(),
-  });
-});
 
 
 module.exports = router;

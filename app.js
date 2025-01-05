@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const bodyParser = require('body-parser');  // You can still keep bodyParser if you prefer, but it's better to use express.json()
+const bodyParser = require('body-parser');   
 const path = require('path');
 
-// Replace body-parser with express.json() which is the newer way
-app.use(express.json()); // For parsing JSON bodies
+ 
+app.use(express.json());  
 app.use(cors());
 
 const apiApp = require('./api/apiapp');
@@ -21,7 +21,7 @@ app.get('/login', (req, res) => {
     res.render('login', { title: 'Login', message: 'Login' });
 });
 
-app.use('/apiapp', apiApp); // This will route all API requests prefixed with /apiapp
+app.use('/apiapp', apiApp);  
 
 app.use(express.static(path.join(__dirname, 'public')));
 
