@@ -40,7 +40,7 @@ router.get('/get-all-users', (req, res) => {
  
     res.json({
       success: true,
-      message: { status: 'success', users: results },
+      message: { status: 'success-ok', users: results },
       dateTime: getCurrentDateTime(),
     });
   });
