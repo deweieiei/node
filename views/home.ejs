@@ -9,7 +9,7 @@
     <link rel="icon" href="/icon/favicon.ico" type="image/x-icon">
 </head>
 
-<body class="center">
+<body>
     <div class="appbar">
         <div class="logo">BeingStory</div>
         <nav class="navigation">
@@ -17,7 +17,20 @@
         </nav>
     </div>
     <div class="content">
+        <img src="/path/to/your/image.jpg" alt="Hero Image" class="hero-image">
+
     </div>
+
+    <script>
+        window.addEventListener('scroll', function () {
+            const appbar = document.querySelector('.appbar');
+            if (window.scrollY > 50) {
+                appbar.classList.add('scrolled');
+            } else {
+                appbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 
 </html>
