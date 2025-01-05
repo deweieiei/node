@@ -63,7 +63,7 @@ router.post('/save-data', (req, res) => {
 
   // SQL query to insert user data
  
-  const query = 'INSERT INTO user (username, password) VALUES (?, ?)';
+  const query =  'INSERT INTO `user` ( `username`, `password`) VALUES (?, ?)'; //'INSERT INTO user (username, password) VALUES (?, ?)';
   db.query(query, [username, password], (err, result) => {
     if (err) {
       console.error('Error inserting user:', err.message);
