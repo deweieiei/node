@@ -50,7 +50,7 @@ router.get('/get-all-users', (req, res) => {
 
 
 router.post('/save-data', (req, res) => {
-    res.json({success: "123456"+res.body,});
+    res.json({success: "123456"+req.body,});
    var { username, password } = req.body;
   
    if (!username || !password) {
