@@ -80,7 +80,7 @@ router.post('/save-data', (req, res) => {
     });
   });
 
-   res.json({success: "abcd",});
+   res.json({success: "abcd", c:username ,b:password});
 });
 
 
