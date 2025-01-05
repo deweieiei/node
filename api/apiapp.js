@@ -92,7 +92,6 @@ router.post('/save-data', (req, res) => {
 });
 
 
-// Basic POST route
 router.post('/submit', (req, res) => {
   const { name, age } = req.body;
   if (!name || !age) {
@@ -105,6 +104,7 @@ router.post('/submit', (req, res) => {
           name,
           age,
       },
+      dateTime: getCurrentDateTime(),
   });
 });
 
