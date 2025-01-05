@@ -3,8 +3,10 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');  // To handle POST body data
 
+
+app.use(express.json()); // For parsing JSON bodies
 app.use(cors());
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 const apiApp = require('./api/apiapp');
 
