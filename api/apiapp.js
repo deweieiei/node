@@ -18,9 +18,6 @@ router.get('/', (req, res) => {
     dateTime: new Date().toISOString(),
   });
 });
-
-
-
  
 
 router.get('/get-all-users', (req, res) => {
@@ -52,6 +49,7 @@ router.get('/get-all-users', (req, res) => {
 });
 
 
+// Save user data (simplified as both save-data and save-datas were identical)
 router.post('/save-data', (req, res) => {
   const { username, password } = req.body;
 
@@ -63,7 +61,7 @@ router.post('/save-data', (req, res) => {
     });
   }
 
-  // SQL query to insert data
+  // SQL query to insert user data
   const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
   db.query(query, [username, password], (err, result) => {
     if (err) {
@@ -84,51 +82,6 @@ router.post('/save-data', (req, res) => {
       },
     });
   });
-});
-
-
-router.post('/save-datas', (req, res) => {
-  //   res.json({success: "123456"+req.body+"123456"+res.body,});
-  //  var { username, password } = req.body;
-  
-  //  if (!username || !password) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: 'Username and password are required',
-  //   });
-  // }
-
-  const { username, password } = req.body;
-
-  // Validate input
-  if (!username || !password) {
-    return res.status(400).json({
-      success: false,
-      message: 'Username and password are required',
-    });
-  }
-
- 
-  const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-  db.query(query, [username, password], (err, result) => {
-    if (err) {
-      console.error('Error inserting user:', err.message);
-      return res.status(500).json({
-        success: false,
-        message: 'Error saving the user',
-      });
-    }
-
-    res.json({
-      success: true,
-      message: 'User saved successfully',
-      data: {
-        userId: result.insertId,
-        username: username,
-      },
-    });
-  });
-
 });
 
 
