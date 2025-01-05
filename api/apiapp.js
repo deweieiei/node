@@ -79,6 +79,8 @@ router.post('/save-data', (req, res) => {
       },
     });
   });
+
+   res.json({success: "abcd",});
 });
 
 
