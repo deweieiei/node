@@ -94,4 +94,21 @@ router.post('/save-data', (req, res) => {
 });
 
 
+// Basic POST route
+app.post('/submit', (req, res) => {
+  const { name, age } = req.body;
+  if (!name || !age) {
+      return res.status(400).json({ error: 'Name and age are required' });
+  }
+
+  res.status(200).json({
+      message: 'Data received successfully',
+      data: {
+          name,
+          age,
+      },
+  });
+});
+
+
 module.exports = router;
