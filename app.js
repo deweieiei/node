@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const apiApp = require('./api/apiapp');
+const apiApp = require('./api/apiapp');  
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -22,10 +22,10 @@ app.get('/login', (req, res) => {
     res.render('login', { title: 'Login', message: 'Login' });
 });
 
-app.use('/apiapp', apiApp);  
+app.use('/apiapp', apiApp);      
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(80, () => {
+app.listen(4000, () => {
     console.log('Server is running on http://localhost:80');
 });
