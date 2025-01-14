@@ -53,9 +53,9 @@ router.post('/register', (req, res) => {
     });
   }
 
-  const query = 'INSERT INTO `user` (`username`, `password`) VALUES (?, ?)';
+  const query = 'INSERT INTO `user` (`username`, `password`, `email`) VALUES (?, ?, ?)';
 
-  db.query(query, [username, password], (err, result) => {
+  db.query(query, [username, password, email], (err, result) => {
     if (err) {
       console.error('Error inserting user:', err.message);
       return res.status(500).json({
