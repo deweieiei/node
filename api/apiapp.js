@@ -76,35 +76,4 @@ router.post('/save-data', (req, res) => {
     });
   });
 });
-
-
-const app = express();
-
-// ตั้งค่าที่เก็บไฟล์และการตั้งชื่อไฟล์
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // โฟลเดอร์สำหรับเก็บภาพ
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // ตั้งชื่อไฟล์ใหม่
-  }
-});
-
-const upload = multer({ storage: storage });
-
-// สร้าง API สำหรับรับภาพ
-app.post('/upload-image', upload.single('image'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ success: false, message: 'No file uploaded' });
-  }
-  res.json({
-    success: true,
-    message: 'File uploaded successfully',
-    filePath: `/uploads/${req.file.filename}`
-  });
-});
  
-
-
-
-module.exports = router;
