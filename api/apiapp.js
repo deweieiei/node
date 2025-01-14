@@ -42,10 +42,10 @@ router.get('/get-all-users', (req, res) => {
   });
 });
 
-router.post('/save-data', (req, res) => {
-  const { username, password } = req.body;
+router.post('/register', (req, res) => {
+  const { username, password,email } = req.body;
 
-  if (!username || !password) {
+  if (!username || !password || !email) {
     return res.status(400).json({
       success: false,
       message: 'Username and password are required',
