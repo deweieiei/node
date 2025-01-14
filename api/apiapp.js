@@ -43,7 +43,7 @@ router.get('/get-all-users', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  const { username, password, email} = req.body;
+  const { username, password, email, image} = req.body;
 
   if (!username || !password || !email) {
     return res.status(400).json({
@@ -53,9 +53,9 @@ router.post('/register', (req, res) => {
     });
   }
 
-  const query = 'INSERT INTO `user` (`username`, `password`, `email`, `create_time`) VALUES (?, ?, ?, ?)';
+  const query = 'INSERT INTO `user` (`username`, `password`, `email`, `image`, `create_time`) VALUES (?, ?, ?, ?, ?)';
 
-  db.query(query, [username, password, email, getCurrentDateTime()], (err, result) => {
+  db.query(query, [username, password, email, image, getCurrentDateTime()], (err, result) => {
     if (err) {
       console.error('Error inserting user:', err.message);
       return res.status(500).json({
