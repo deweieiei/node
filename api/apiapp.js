@@ -63,6 +63,9 @@ router.post('/register', (req, res) => {
         message: 'Error saving the user',
         error: err.message,
         dateTime: getCurrentDateTime(),
+        dew1: username,
+        dew2: password,
+        dew: email,
       });
     }
 
