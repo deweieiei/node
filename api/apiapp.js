@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./dbConnection');
-const bcrypt = require('bcrypt');
+ 
 
 const getCurrentDateTime = () => new Date().toISOString();
 
@@ -81,9 +81,7 @@ router.post('/register', (req, res) => {
     });
   });
 });
-
  
-
 module.exports = router;
 
  
