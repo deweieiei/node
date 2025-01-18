@@ -42,46 +42,56 @@ router.get('/get-all-users', (req, res) => {
     });
   });
 });
-
 router.post('/register', (req, res) => {
-  const { username, password, email, image} = req.body;
-
+  const { username, password, email, image } = req.body;
   if (!username || !password || !email) {
     return res.status(400).json({
       success: false,
-      message: 'Username and password are required',
+      message: 'Username, password, and email are required',
       dateTime: getCurrentDateTime(),
     });
   }
-
-  const query = 'INSERT INTO `user` (`username`, `password`, `email`, `image`, `create_time`) VALUES (?, ?, ?, ?, ?)';
-
-  db.query(query, [username, password, email, image, getCurrentDateTime()], (err, result) => {
+  const checkUserQuery = 'SELECT COUNT(*) AS count FROM `user` WHERE `username` = ?';
+  db.query(checkUserQuery, [username], (err, results) => {
     if (err) {
-      console.error('Error inserting user:', err.message);
+      console.error('Error checking user:', err.message);
       return res.status(500).json({
         success: false,
-        message: 'Error saving the user',
+        message: 'Error checking the user',
         error: err.message,
         dateTime: getCurrentDateTime(),
-        username: username,
-        password: password,
-        email: email,
       });
     }
-
-    res.json({
-      success: true,
-      message: 'User saved successfully',
-      data: {
-        userId: result.insertId,
-        username: username,
-      },
-      dateTime: getCurrentDateTime(),
+    if (results[0].count > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Username already exists',
+        dateTime: getCurrentDateTime(),
+      });
+    }
+    const insertUserQuery = 'INSERT INTO `user` (`username`, `password`, `email`, `image`, `create_time`) VALUES (?, ?, ?, ?, ?)';
+    db.query(insertUserQuery, [username, password, email, image, getCurrentDateTime()], (err, result) => {
+      if (err) {
+        console.error('Error inserting user:', err.message);
+        return res.status(500).json({
+          success: false,
+          message: 'Error saving the user',
+          error: err.message,
+          dateTime: getCurrentDateTime(),
+        });
+      }
+      res.json({
+        success: true,
+        message: 'User saved successfully',
+        data: {
+          userId: result.insertId,
+          username: username,
+        },
+        dateTime: getCurrentDateTime(),
+      });
     });
   });
 });
- 
 module.exports = router;
 
  
