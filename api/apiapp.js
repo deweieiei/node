@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('./dbConnection');
 
 const getCurrentDateTime = () => new Date().toISOString();
+
 router.get('/', (req, res) => {
   res.json({
     success: true,
@@ -10,6 +11,7 @@ router.get('/', (req, res) => {
     dateTime: getCurrentDateTime(),
   });
 });
+
 router.get('/get-all-users', (req, res) => {
   const query = 'SELECT * FROM `user`';
   db.query(query, (err, results) => {
@@ -37,6 +39,7 @@ router.get('/get-all-users', (req, res) => {
     });
   });
 });
+
 router.post('/register', (req, res) => {
   const { username, password, email, image } = req.body;
   if (!username || !password || !email) {
@@ -87,6 +90,61 @@ router.post('/register', (req, res) => {
     });
   });
 });
+
+router.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'Username and password are required',
+      dateTime: getCurrentDateTime(),
+    });
+  }
+
+  const query = 'SELECT * FROM `user` WHERE `username` = ?';
+
+  db.query(query, [username], (err, results) => {
+    if (err) {
+      console.error('Error fetching user:', err.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Error fetching the user',
+        error: err.message,
+        dateTime: getCurrentDateTime(),
+      });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        dateTime: getCurrentDateTime(),
+      });
+    }
+
+    const user = results[0];
+
+    if (user.password !== password) {
+      return res.status(401).json({
+        success: false,
+        message: 'Incorrect password',
+        dateTime: getCurrentDateTime(),
+      });
+    }
+
+ 
+    delete user.password;
+
+    res.json({
+      success: true,
+      message: 'Login successful',
+      data: user,
+      dateTime: getCurrentDateTime(),
+    });
+  });
+});
+
 module.exports = router;
 
  
