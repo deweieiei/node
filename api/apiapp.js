@@ -145,6 +145,33 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.post('/addpolicy', (req, res) => {
+  const { section, content } = req.body;
+  
+  const insertUserQuery = 'INSERT INTO `privacy_policy` (`section`, `content`, `create_time`) VALUES (?, ?, ?)';
+  db.query(insertUserQuery, [section, content, getCurrentDateTime()], (err, result) => {
+    if (err) {
+      console.error('Error inserting user:', err.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Error saving the Policy',
+        error: err.message,
+        dateTime: getCurrentDateTime(),
+      });
+    }
+    res.json({
+      success: true,
+      message: 'Policy saved successfully',
+      data: {
+        userId: result.insertId,
+        username: username,
+      },
+      dateTime: getCurrentDateTime(),
+    });
+  });
+});
+
+
 module.exports = router;
 
  
