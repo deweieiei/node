@@ -163,8 +163,7 @@ router.post('/addpolicy', (req, res) => {
       success: true,
       message: 'Policy saved successfully',
       data: {
-        userId: result.insertId,
-        username: username,
+        policyId: result.insertId,
       },
       dateTime: getCurrentDateTime(),
     });
