@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const path = require('path');
-const db = require('api/dbConnection');
 
 app.use(express.json());
 app.use(cors());
