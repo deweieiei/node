@@ -43,7 +43,7 @@ async function fetchGoldPrice() {
   }
 }
 
-cron.schedule('*/15 * * * *', () => {
+cron.schedule('*/1 * * * *', () => {
   console.log('ทำงานทุก 15 นาที');
   fetchGoldPrice();
 });
