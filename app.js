@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const path = require('path');
+const db = require('api/dbConnection');
 
 app.use(express.json());
 app.use(cors());
@@ -20,6 +21,17 @@ app.get('/login', (req, res) => {
 
 const apiApp = require('./api/apiapp');
 app.use('/apiapp', apiApp);
+
+cron.schedule('*/15 * * * *', () => {
+  console.log('ทำงานทุก15นาที:', new fetchGoldPrice());
+});
+const getCurrentDateTime = () => new Date().toISOString();
+async function fetchGoldPrice() {
+  try {
+  const insertUserQuery = 'INSERT INTO `data` (`text`) VALUES (?)';
+    db.query(insertUserQuery, [getCurrentDateTime() ], (err, result) => {    });
+  }catch(error){}
+}
 
 app.listen(4000, () => {
     console.log('Server is running on http://localhost:4000');
