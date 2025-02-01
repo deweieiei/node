@@ -22,31 +22,7 @@ app.get('/login', (req, res) => {
 const apiApp = require('./api/apiapp');
 app.use('/apiapp', apiApp);
 
-const getCurrentDateTime = () => new Date().toISOString();
-
-const query = (sql, params) => {
-  return new Promise((resolve, reject) => {
-    db.query(sql, params, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-};
-
-async function fetchGoldPrice() {
-  try {
-    const insertUserQuery = 'INSERT INTO `data` (`text`) VALUES (?)';
-    await query(insertUserQuery, [getCurrentDateTime()]);
-    console.log('Data inserted successfully');
-  } catch (error) {
-    console.error('Error inserting data:', error);
-  }
-}
-
-cron.schedule('*/1 * * * *', () => {
-  console.log('ทำงานทุก 15 นาที');
-  fetchGoldPrice();
-});
+ 
 
 app.listen(4000, () => {
     console.log('Server is running on http://localhost:4000');
