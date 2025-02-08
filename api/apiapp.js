@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./dbConnection');
+const axios = require("axios");
 
 const getCurrentDateTime = () => new Date().toISOString();
 
@@ -170,7 +171,29 @@ router.post('/addpolicy', (req, res) => {
   });
 });
 
+router.post('/get-gold',async (req, res) => {
+ try {
+    
+    const apiKey = "goldapi-155ydsm6vz7ty2-io";  
+    const response = await axios.get(`https://www.goldapi.io/api/XAU/USD`, {
+      headers: { "x-access-token": apiKey },
+    });
 
+    const goldPrice = response.data.price;
+    res.json({
+      success: true,
+      price: goldPrice,
+      currency: "USD",
+      updated: response.data.timestamp,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch gold price",
+      error: error.message,
+    });
+  }
+});
 
 module.exports = router;
 
