@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./dbConnection');
-const axios = require("axios");
+const db = require('./dbConnection'); 
+const fetch = require('node-fetch');
 
 const getCurrentDateTime = () => new Date().toISOString();
 
@@ -171,26 +171,29 @@ router.post('/addpolicy', (req, res) => {
   });
 });
 router.post('/getgold', async (req, res) => {
-  const apiKey = 'goldapi-155ydsm6vz7ty2-io'; // API Key ของคุณ
-  const symbol = 'XAU';
-  const currency = 'THB';
-  const date = '/20250207';
+  const apiKey = 'goldapi-155ydsm6vz7ty2-io';
+  const url = 'https://www.goldapi.io/api/XAU/THB/20250207';
 
-  const url = `https://www.goldapi.io/api/${symbol}/${currency}${date}`;
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'x-access-token': apiKey,
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow'
+  };
 
   try {
-    const response = await axios.get(url, {
-      headers: {
-        'x-access-token': apiKey,
-        'Content-Type': 'application/json',
-      },
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    res.status(200).json({
+      success: true,
+      data: result,
     });
-
-    res.json(response.data);
   } catch (error) {
+    console.error('Error:', error);
     res.status(500).json({
       success: false,
-      message: 'Error fetching gold price',
       error: error.message,
     });
   }
