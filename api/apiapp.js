@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./dbConnection'); 
-const fetch = require('node-fetch');
+const db = require('./dbConnection');  
 
 const getCurrentDateTime = () => new Date().toISOString();
 
@@ -169,35 +168,7 @@ router.post('/addpolicy', (req, res) => {
       dateTime: getCurrentDateTime(),
     });
   });
-});
-router.post('/getgold', async (req, res) => {
-  const apiKey = 'goldapi-155ydsm6vz7ty2-io';
-  const url = 'https://www.goldapi.io/api/XAU/THB/20250207';
-
-  const requestOptions = {
-    method: 'GET',
-    headers: {
-      'x-access-token': apiKey,
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow'
-  };
-
-  try {
-    const response = await fetch(url, requestOptions);
-    const result = await response.json();
-    res.status(200).json({
-      success: true,
-      data: result,
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
-  }
-});
+}); 
 
 module.exports = router;
 
