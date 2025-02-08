@@ -170,26 +170,27 @@ router.post('/addpolicy', (req, res) => {
     });
   });
 });
+router.post('/getgold', async (req, res) => {
+  const apiKey = 'goldapi-155ydsm6vz7ty2-io'; // API Key ของคุณ
+  const symbol = 'XAU';
+  const currency = 'THB';
+  const date = '/20250207';
 
-router.post('/get-gold',async (req, res) => {
- try {
-    
-    const apiKey = "goldapi-155ydsm6vz7ty2-io";  
-    const response = await axios.get(`https://www.goldapi.io/api/XAU/USD`, {
-      headers: { "x-access-token": apiKey },
+  const url = `https://www.goldapi.io/api/${symbol}/${currency}${date}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'x-access-token': apiKey,
+        'Content-Type': 'application/json',
+      },
     });
 
-    const goldPrice = response.data.price;
-    res.json({
-      success: true,
-      price: goldPrice,
-      currency: "USD",
-      updated: response.data.timestamp,
-    });
+    res.json(response.data);
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Failed to fetch gold price",
+      message: 'Error fetching gold price',
       error: error.message,
     });
   }
