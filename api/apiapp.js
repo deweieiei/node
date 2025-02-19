@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./dbConnection');  
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const getCurrentDateTime = () => new Date().toISOString();
 
@@ -169,6 +172,37 @@ router.post('/addpolicy', (req, res) => {
     });
   });
 }); 
+
+const uploadImage = () => {
+  // สร้างโฟลเดอร์ถ้ายังไม่มี
+  const uploadDir = path.join(__dirname, "userimage");
+  if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+  }
+
+  // ตั้งค่า Multer
+  const storage = multer.diskStorage({
+      destination: (req, file, cb) => cb(null, uploadDir),
+      filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+  });
+  const upload = multer({ storage });
+
+  // คืนค่า middleware สำหรับ router
+  return (req, res) => {
+      upload.single("image")(req, res, (err) => {
+          if (err) return res.status(500).json({ message: "เกิดข้อผิดพลาดในการอัปโหลด" });
+          if (!req.file) return res.status(400).json({ message: "กรุณาอัปโหลดรูปภาพ" });
+
+          res.json({
+              message: "อัปโหลดสำเร็จ",
+              filename: req.file.filename,
+              path: `/userimage/${req.file.filename}`
+          });
+      });
+  };
+};
+
+router.post("/uploadImage", uploadImage());
 
 module.exports = router;
 
