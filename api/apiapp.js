@@ -172,10 +172,8 @@ router.post('/addpolicy', (req, res) => {
     });
   });
 }); 
-
 const uploadImage = () => {
-  // สร้างโฟลเดอร์ถ้ายังไม่มี
-  const uploadDir = path.join(__dirname, "userimage");
+  const uploadDir = path.join(__dirname, "../userimage");
   if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
   }
@@ -183,20 +181,28 @@ const uploadImage = () => {
   // ตั้งค่า Multer
   const storage = multer.diskStorage({
       destination: (req, file, cb) => cb(null, uploadDir),
-      filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+      filename: (req, file, cb) => {
+          // ตรวจสอบว่า req.body.filename มีค่าหรือไม่
+          let customFilename = req.body.filename || Date.now().toString();
+          console.log(req.body.filename);
+          customFilename = customFilename.replace(/\s+/g, "_"); // ลบช่องว่างออกจากชื่อไฟล์
+          cb(null, customFilename + path.extname(file.originalname));
+      }
   });
   const upload = multer({ storage });
 
-  // คืนค่า middleware สำหรับ router
   return (req, res) => {
-      upload.single("image")(req, res, (err) => {
+      // ใช้ upload.fields เพื่อให้ req.body ถูกอ่านก่อน multer
+      upload.fields([{ name: "image" }])(req, res, (err) => {
           if (err) return res.status(500).json({ message: "เกิดข้อผิดพลาดในการอัปโหลด" });
-          if (!req.file) return res.status(400).json({ message: "กรุณาอัปโหลดรูปภาพ" });
+          if (!req.files || !req.files.image) return res.status(400).json({ message: "กรุณาอัปโหลดรูปภาพ" });
+
+          const uploadedFile = req.files.image[0];
 
           res.json({
               message: "อัปโหลดสำเร็จ",
-              filename: req.file.filename,
-              path: `/userimage/${req.file.filename}`
+              filename: uploadedFile.filename,
+              path: `/userimage/${uploadedFile.filename}`
           });
       });
   };
