@@ -42,58 +42,7 @@ router.get('/get-all-users', (req, res) => {
     });
   });
 });
-
-router.post('/register', (req, res) => {
-  const { username, password, email, image } = req.body;
-  if (!username || !password || !email) {
-    return res.status(400).json({
-      success: false,
-      message: 'Username, password, and email are required',
-      dateTime: getCurrentDateTime(),
-    });
-  }
-  const checkUserQuery = 'SELECT COUNT(*) AS count FROM `user` WHERE `username` = ?';
-  db.query(checkUserQuery, [username], (err, results) => {
-    if (err) {
-      console.error('Error checking user:', err.message);
-      return res.status(500).json({
-        success: false,
-        message: 'Error checking the user',
-        error: err.message,
-        dateTime: getCurrentDateTime(),
-      });
-    }
-    if (results[0].count > 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Username already exists',
-        dateTime: getCurrentDateTime(),
-      });
-    }
-    const insertUserQuery = 'INSERT INTO `user` (`username`, `password`, `email`, `image`, `create_time`) VALUES (?, ?, ?, ?, ?)';
-    db.query(insertUserQuery, [username, password, email, image, getCurrentDateTime()], (err, result) => {
-      if (err) {
-        console.error('Error inserting user:', err.message);
-        return res.status(500).json({
-          success: false,
-          message: 'Error saving the user',
-          error: err.message,
-          dateTime: getCurrentDateTime(),
-        });
-      }
-      res.json({
-        success: true,
-        message: 'User saved successfully',
-        data: {
-          userId: result.insertId,
-          username: username,
-        },
-        dateTime: getCurrentDateTime(),
-      });
-    });
-  });
-});
-
+ 
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
@@ -172,43 +121,89 @@ router.post('/addpolicy', (req, res) => {
     });
   });
 }); 
-const uploadImage = () => {
-  const uploadDir = path.join(__dirname, "../userimage");
-  if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+ 
+
+
+const uploadDir = path.join(__dirname, "../userimage");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// ตั้งค่า Multer สำหรับอัปโหลดภาพ
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    let customFilename = req.body.filename || Date.now().toString();
+    customFilename = customFilename.replace(/\s+/g, "_"); // ลบช่องว่างออกจากชื่อไฟล์
+    cb(null, customFilename + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage });
+
+// API ลงทะเบียน + อัปโหลดรูป
+router.post("/register", upload.single("image"), (req, res) => {
+  const { username, password, email } = req.body;
+  
+  if (!username || !password || !email) {
+    return res.status(400).json({
+      success: false,
+      message: "Username, password, and email are required",
+      dateTime: getCurrentDateTime(),
+    });
   }
 
-  // ตั้งค่า Multer
-  const storage = multer.diskStorage({
-      destination: (req, file, cb) => cb(null, uploadDir),
-      filename: (req, file, cb) => {
-          // ตรวจสอบว่า req.body.filename มีค่าหรือไม่
-          let customFilename = req.body.filename || Date.now().toString();
-          console.log(req.body.filename);
-          customFilename = customFilename.replace(/\s+/g, "_"); // ลบช่องว่างออกจากชื่อไฟล์
-          cb(null, customFilename + path.extname(file.originalname));
-      }
-  });
-  const upload = multer({ storage });
-
-  return (req, res) => {
-      // ใช้ upload.fields เพื่อให้ req.body ถูกอ่านก่อน multer
-      upload.fields([{ name: "image" }])(req, res, (err) => {
-          if (err) return res.status(500).json({ message: "เกิดข้อผิดพลาดในการอัปโหลด" });
-          if (!req.files || !req.files.image) return res.status(400).json({ message: "กรุณาอัปโหลดรูปภาพ" });
-
-          const uploadedFile = req.files.image[0];
-
-          res.json({
-              message: "อัปโหลดสำเร็จ",
-              filename: uploadedFile.filename,
-              path: `/userimage/${uploadedFile.filename}`
-          });
+  // ตรวจสอบว่ามี username ซ้ำหรือไม่
+  const checkUserQuery = "SELECT COUNT(*) AS count FROM `user` WHERE `username` = ?";
+  db.query(checkUserQuery, [username], (err, results) => {
+    if (err) {
+      console.error("Error checking user:", err.message);
+      return res.status(500).json({
+        success: false,
+        message: "Error checking the user",
+        error: err.message,
+        dateTime: getCurrentDateTime(),
       });
-  };
-};
+    }
 
-router.post("/uploadImage", uploadImage());
+    if (results[0].count > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Username already exists",
+        dateTime: getCurrentDateTime(),
+      });
+    }
+
+    // ตรวจสอบว่ามีไฟล์อัปโหลดหรือไม่
+    let imagePath = req.file ? `/userimage/${req.file.filename}` : null;
+
+    // บันทึกข้อมูลลง Database
+    const insertUserQuery =
+      "INSERT INTO `user` (`username`, `password`, `email`, `image`, `create_time`) VALUES (?, ?, ?, ?, ?)";
+    db.query(insertUserQuery, [username, password, email, imagePath, getCurrentDateTime()], (err, result) => {
+      if (err) {
+        console.error("Error inserting user:", err.message);
+        return res.status(500).json({
+          success: false,
+          message: "Error saving the user",
+          error: err.message,
+          dateTime: getCurrentDateTime(),
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "User registered successfully",
+        data: {
+          userId: result.insertId,
+          username: username,
+          email: email,
+          image: imagePath,
+        },
+        dateTime: getCurrentDateTime(),
+      });
+    });
+  });
+});
 
 module.exports = router;
 
