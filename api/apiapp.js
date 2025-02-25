@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     cb(null, customFilename + path.extname(file.originalname));
   },
 });
-const upload = multer({storage , limits: { fileSize: 10 * 1024 * 1024 },});
+const upload = multer({storage /*, limits: { fileSize: 10 * 1024 * 1024 },*/});
 
 // API ลงทะเบียน + อัปโหลดรูป
 router.post("/register", upload.single("image"), (req, res) => {
