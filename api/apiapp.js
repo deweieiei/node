@@ -4,7 +4,6 @@ const db = require('./dbConnection');
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-require('./api2');  
 const getCurrentDateTime = () => new Date().toISOString();
 
 const uploadDir = path.join(__dirname, "../userimage");
