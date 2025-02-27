@@ -25,4 +25,8 @@ app.use('/apiapp', apiApp);
 
 app.listen(4000, () => {
     console.log('Server is running on http://localhost:4000');
+     setInterval(async () => {
+    console.log('Fetching gold prices...');
+    // เพิ่มคำสั่งสำหรับการ fetch ราคาทอง หรือ task อื่นๆ
+   }, 60 * 1000);
 });
