@@ -57,7 +57,7 @@ router.post("/register", upload.single("image"), (req, res) => {
     }
 
     // ตรวจสอบว่ามีไฟล์อัปโหลดหรือไม่
-    let imagePath = req.file ? `/userimage/${req.file.filename}` : null;
+    let imagePath = req.file ? `/userimage/${req.file.filename}` : '';
 
     // บันทึกข้อมูลลง Database
     const insertUserQuery =
