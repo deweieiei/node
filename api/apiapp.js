@@ -141,52 +141,7 @@ router.post('/login', (req, res) => {
   });
 });
  
-
-const uploadDir_user_view = path.join(__dirname,"../imageUserView");
-if(!fs.existsSync(uploadDir)){
-  fs.mkdirSync(uploadDir,{recursive:true});
-} 
-const storage_user_view = multer.diskStorage({
-  destination:(rep,file, cb)=> cb(null,uploadDir_user_view),
-  filename: (req,filecb)=>{
-    let customFilename = req.body.filename || Date.now().toString();
-  customFilename = customFilename.replace(/\s+/g,"_");
-  cb(null,customFilename+path.extname(file.originalname));
-  }
-}); 
-const upload_user_view = multer({storage_user_view});
-
-router.post("/register_user_view",uploadDir_user_view.single("image"),(req,res)=>{
-  const {user_view_username,user_view_password,user_view_email,user_view_image,user_view_create_time} = req.body;
-  if(!user_view_username||user_view_password||user_view_email){
-    return res.status(400).json({
-      success: false,
-      message: "Username, password, and email are required",
-      dateTime: getCurrentDateTime(),
-    })
-  }
-
-  const query_user_view = "SELECT COUNT(*) AS count FROM `user_view` WHERE `user_view_username` = ?";
-  db.query(query_user_view,[user_view_username],(err,result)=>{
-    if (err){
-      console.error("Error Checking user:",err.message);
-      return res.status(500).json({
-        success: false,
-        message: "Error checking the user_view",
-        error: err.message,
-        dateTime: getCurrentDateTime(),
-      });
-    }
-    if(result[0].count > 0){
-      return res.status(400).json({
-        success: false,
-        message: "Username already exists",
-        dateTime: getCurrentDateTime(),
-      });
-    }
-  });
-
-});
+ 
 
 module.exports = router;
 
